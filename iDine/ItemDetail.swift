@@ -24,10 +24,19 @@ struct ItemDetail: View {
             }
             
             Text(item.description).padding()
-            Button("Order this"){
-                self.order.add(item: self.item)
-            }.font(.headline)
             Spacer()
+            Button("Add to order"){
+                self.order.add(item: self.item)
+            }.frame(minWidth:0, maxWidth: .infinity)
+                .font(.title)
+                .padding(.vertical, 10)
+                
+                .background(Color.green)
+                .foregroundColor(Color.white)
+                .cornerRadius(40)
+                .padding(.horizontal, 20)
+                .border(Color.purple, width: 0)
+                .offset(y: -30)
         }
         .navigationBarTitle(Text(item.name), displayMode: .inline)
     }
@@ -39,8 +48,11 @@ struct ItemDetail_Previews: PreviewProvider {
     static let order = Order()
     
     static var previews: some View {
-        NavigationView{
-            ItemDetail(item: MenuItem.example).environmentObject(order)
+        TabView{
+            NavigationView{
+                ItemDetail(item: MenuItem.example).environmentObject(order)
+            }
         }
+        
     }
 }

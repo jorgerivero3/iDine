@@ -12,8 +12,10 @@ struct CheckoutView: View {
     @EnvironmentObject var order: Order
     static let paymentTypes = ["Cash", "Credit Card", "iDine Points"]
     static let tipAmounts = [10, 15, 20, 25, 0]
+    static let pickupTimes = ["Now", "Tonight", "Tomorrow Morning"]
     @State private var tipAmount = 1
     @State private var paymentType = 0
+    @State private var pickupTime = 0
     @State private var addLoyaltyDetails = false
     @State private var loyaltyNumber = ""
     @State private var showingPaymentAlert = false
@@ -39,6 +41,13 @@ struct CheckoutView: View {
                 if addLoyaltyDetails{
                     TextField("Enter your iDine ID", text: $loyaltyNumber)
                 }
+            }
+            Section(header: Text("Pickup Time")){
+                Picker("When do you want to pick up?", selection: $pickupTime){
+                    ForEach(0..<Self.pickupTimes.count){
+                        Text(Self.pickupTimes[$0])
+                    }
+                }.pickerStyle(SegmentedPickerStyle())
             }
             Section(header: Text("Add a tip?")){
                 Picker("Percentage", selection: $tipAmount){
