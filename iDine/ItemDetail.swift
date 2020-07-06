@@ -10,6 +10,8 @@ import SwiftUI
 
 struct ItemDetail: View {
     @EnvironmentObject var order: Order
+    @EnvironmentObject var favorites: Favorites
+    var favText = "Add to favorites"
     var item: MenuItem
     var body: some View {
         VStack{
@@ -25,20 +27,40 @@ struct ItemDetail: View {
             
             Text(item.description).padding()
             Spacer()
-            Button("Add to order"){
-                self.order.add(item: self.item)
-            }.frame(minWidth:0, maxWidth: .infinity)
-                .font(.title)
-                .padding(.vertical, 10)
+            HStack{
                 
-                .background(Color.green)
-                .foregroundColor(Color.white)
-                .cornerRadius(40)
-                .padding(.horizontal, 20)
-                .border(Color.purple, width: 0)
-                .offset(y: -30)
+                Button("Add to order"){
+                    self.order.add(item: self.item)
+                }.frame(minWidth:0, maxWidth: .infinity)
+                    .font(.title)
+                    .padding(15)
+                    
+                    .background(Color.green)
+                    .foregroundColor(Color.white)
+                    .cornerRadius(40)
+                    .padding(.horizontal, 10)
+                    .border(Color.purple, width: 0)
+                    .offset(y: -30)
+            }
+            
         }
         .navigationBarTitle(Text(item.name), displayMode: .inline)
+    .navigationBarItems(trailing:
+        Button(action: {
+            if(self.favorites.items.contains(self.item)){
+                self.favorites.remove(item: self.item)
+            }else{
+                self.favorites.add(item: self.item)
+            }
+
+        }){
+            if (self.favorites.items.contains(self.item)){
+                Image(systemName: "star.fill")
+            }else{
+                Image(systemName: "star")
+            }
+            
+    }.foregroundColor(Color.yellow))
     }
     
 }
